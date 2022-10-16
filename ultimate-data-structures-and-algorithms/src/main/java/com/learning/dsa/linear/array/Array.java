@@ -39,7 +39,7 @@ public class Array {
 	}
 
 	public void removeAt(int i) {
-		if (i < count && i < 0) {
+		if (i < count && i >= 0) {
 			for (int j = i; j < count; j++) {
 				items[j] = items[j + 1];
 			}
