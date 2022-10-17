@@ -1,91 +1,87 @@
 package com.learning.dsa.linear.hashtable;
 
-import java.io.ObjectInputStream.GetField;
 import java.nio.channels.IllegalSelectorException;
 import java.util.LinkedList;
 
 public class HashTable {
-	// put(k,v)
-	// get(k):v
-	// remove(k)
-	// k:int
-	// v:string
-	// Collisions: chaining
+  // put(k,v)
+  // get(k):v
+  // remove(k)
+  // k:int
+  // v:string
+  // Collisions: chaining
 
-	private int bucketSize;
+  private int bucketSize;
+  private LinkedList<Entry>[] entries;
 
-	private class Entry {
-		private int key;
-		private String value;
+  public HashTable(int bucketSize) {
+    this.bucketSize = bucketSize;
+    entries = new LinkedList[bucketSize];
+  }
 
-		public Entry(int key, String value) {
-			this.key = key;
-			this.value = value;
-		}
-	}
+  public void put(int key, String value) {
+    LinkedList<Entry> bucket = getOrCreate(key);
+    Entry entry = getEntry(bucket, key);
+    if (entry != null) {
+      entry.value = value;
+    } else {
+      bucket.addLast(new Entry(key, value));
+    }
+  }
 
-	private LinkedList<Entry>[] entries;
+  public String get(int key) {
+    LinkedList<Entry> bucket = getBucket(key);
+    Entry entry = getEntry(bucket, key);
+    return entry == null ? null : entry.value;
+  }
 
-	public HashTable(int bucketSize) {
-		this.bucketSize = bucketSize;
-		entries = new LinkedList[bucketSize];
-	}
+  public void remove(int key) {
+    LinkedList<Entry> bucket = getBucket(key);
+    Entry entry = getEntry(bucket, key);
+    if (entry == null) {
+      throw new IllegalSelectorException();
+    }
+    bucket.remove(entry);
+  }
 
-	public void put(int key, String value) {
-		LinkedList<Entry> bucket = getOrCreate(key);
-		Entry entry = getEntry(bucket, key);
-		if(entry!=null) {
-			entry.value=value;
-		}else {
-			bucket.addLast(new Entry(key, value));
-		}
-	}
+  private int hash(int key) {
+    return Math.abs(key) % bucketSize;
+  }
 
+  private Entry getEntry(LinkedList<Entry> bucket, int key) {
+    if (bucket != null) {
+      for (Entry entry : bucket) {
+        if (entry.key == key) {
+          return entry;
+        }
+      }
+    }
+    return null;
+  }
 
-	public String get(int key) {
-		LinkedList<Entry> bucket = getBucket(key);
-		Entry entry = getEntry(bucket, key);
-		return entry == null ? null : entry.value;
-	}
+  private LinkedList<Entry> getBucket(int key) {
+    int index = hash(key);
+    LinkedList<Entry> bucket = entries[index];
+    return bucket;
+  }
 
-	public void remove(int key) {
-		LinkedList<Entry> bucket = getBucket(key);
-		Entry entry = getEntry(bucket, key);
-		if (entry == null) {
-			throw new IllegalSelectorException();
-		}
-		bucket.remove(entry);
-	}
+  private LinkedList<Entry> getOrCreate(int key) {
+    int index = hash(key);
+    if (entries[index] == null) {
+      entries[index] = new LinkedList<Entry>();
+    }
 
-	private int hash(int key) {
-		return Math.abs(key) % bucketSize;
-	}
+    LinkedList<Entry> bucket = entries[index];
+    return bucket;
+  }
 
-	private Entry getEntry(LinkedList<Entry> bucket, int key) {
-		if (bucket != null) {
-			for (Entry entry : bucket) {
-				if (entry.key == key) {
-					return entry;
-				}
-			}
-		}
-		return null;
-	}
+  private class Entry {
+    private int key;
+    private String value;
 
-	private LinkedList<Entry> getBucket(int key) {
-		int index = hash(key);
-		LinkedList<Entry> bucket = entries[index];
-		return bucket;
-	}
-
-	private LinkedList<Entry> getOrCreate(int key) {
-		int index = hash(key);
-		if (entries[index] == null) {
-			entries[index] = new LinkedList<Entry>();
-		}
-
-		LinkedList<Entry> bucket = entries[index];
-		return bucket;
-	}
-
+    public Entry(int key, String value) {
+      this.key = key;
+      this.value = value;
+    }
+  }
 }
