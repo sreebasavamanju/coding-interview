@@ -32,7 +32,7 @@ public class BinarySearch {
   }
   /**
    * Time Complexity: O(logn)
-   * Space Complexity: O(1)
+   * Space Complexity: O()
    */
   private static int binarySearchIterative(int[] nums, int target) {
     int low = 0;
