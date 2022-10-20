@@ -8,7 +8,7 @@
         <artifactId>coding-interview</artifactId>
         <version>1.0</version>
     </parent>
-    <groupId>com.baeldung</groupId>
+    <groupId>com.learning</groupId>
     <artifactId>data-structures-for-coding-interview</artifactId>
     <version>1.0</version>
     <name>data-structures-for-coding-interview</name>
