@@ -27,5 +27,6 @@
         <module>master-the-coding-interview</module>
         <module>ultimate-data-structures-and-algorithms</module>
       <module>cracking-the-coding-interview</module>
+    <module>blind75</module>
   </modules>
 </project>
